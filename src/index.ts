@@ -1,14 +1,17 @@
 import express, { Request, Response } from "express";
 import dns from "dns";
 import net from "net";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-const SMTP_PORT = 25; // standard SMTP
 const SMTP_TIMEOUT_MS = 15000;
-const HELLO_DOMAIN = "example.com"; // change to your domain if you have one
-const PROBE_SENDER = "verify@example.com"; // change to something on your domain
+
+const SMTP_PORT = Number(process.env.SMTP_PORT) || 25;
+const HELLO_DOMAIN = process.env.HELLO_DOMAIN || "example.com";
+const PROBE_SENDER = process.env.PROBE_SENDER || "verify@example.com";
 
 // Basic email regex (good enough for pre-check; SMTP is the real test)
 const EMAIL_REGEX =
